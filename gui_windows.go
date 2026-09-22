@@ -11,7 +11,7 @@ func launchIDPrompt() {
 
 	$Form                            = New-Object system.Windows.Forms.Form
 	$Form.ClientSize                 = New-Object System.Drawing.Point(520,265)
-	$Form.text                       = "Aeacus"
+	$Form.text                       = "HBA CyberEagles"
 	$Form.TopMost                    = $true
 	$Form.Icon                       = "C:\aeacus\assets\img\logo.ico"
 	$Form.BackgroundImage            = [system.drawing.image]::FromFile("C:\aeacus\assets\img\TeamIDbackground.png")

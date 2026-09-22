@@ -20,8 +20,8 @@ func genReport(img *imageData) {
 		displayTeamID = html.EscapeString(teamID)
 	}
 
-	header := `<!DOCTYPE html> <html> <head> <meta http-equiv="refresh" content="60"> <title>Aeacus Scoring Report</title> <style type="text/css"> h1 { text-align: center; } h2 { text-align: center; } body { font-family: Arial, Verdana, sans-serif; font-size: 14px; margin: 0; padding: 0; width: 100%; height: 100%; background: url('./img/background.png'); background-size: cover; background-attachment: fixed; background-position: top center; background-color: #336699; } ul { margin-top: 0.5rem; } .red {color: red;} .green {color: green;} .blue {color: blue;} .gray {color: gray;} .main { margin-top: 10px; margin-bottom: 10px; margin-left: auto; margin-right: auto; padding: 0px; border-radius: 12px; background-color: white; width: 900px; max-width: 100%; min-width: 600px; box-shadow: 0px 0px 12px #003366; } .text { padding: 12px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .center { text-align: center; } .binary { position: relative; overflow: hidden; } .binary::before { position: absolute; top: -1000px; left: -1000px; display: block; width: 500%; height: 300%; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); transform: rotate(-45deg); content: attr(data-binary); opacity: 0.15; line-height: 2em; letter-spacing: 2px; color: #369; font-size: 10px; pointer-events: none; } </style> <meta http-equiv="refresh"> </head> <body><div class="main"><div class="text"><div class="binary" data-binary="` + displayTeamID + `"><p align=center style="width:100%;text-align:center"><img align=middle style="width:180px; float:middle" src="./img/logo.png"></p>`
-	footer := `</p> <br> <p align=center style="text-align:center"> The Aeacus project is free and open source software. This project is in no way endorsed or affiliated with the Air Force Association or the University of Texas at San Antonio. </p> </div> </div> </div> </body> </html>`
+	header := `<!DOCTYPE html> <html> <head> <meta http-equiv="refresh" content="60"> <title>HBA CyberEagles Scoring Report</title> <style type="text/css"> h1 { text-align: center; } h2 { text-align: center; } body { font-family: Arial, Verdana, sans-serif; font-size: 14px; margin: 0; padding: 0; width: 100%; height: 100%; background: url('./img/background.png'); background-size: cover; background-attachment: fixed; background-position: top center; background-color: #336699; } ul { margin-top: 0.5rem; } .red {color: red;} .green {color: green;} .blue {color: blue;} .gray {color: gray;} .main { margin-top: 10px; margin-bottom: 10px; margin-left: auto; margin-right: auto; padding: 0px; border-radius: 12px; background-color: white; width: 900px; max-width: 100%; min-width: 600px; box-shadow: 0px 0px 12px #003366; } .text { padding: 12px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .center { text-align: center; } .binary { position: relative; overflow: hidden; } .binary::before { position: absolute; top: -1000px; left: -1000px; display: block; width: 500%; height: 300%; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); transform: rotate(-45deg); content: attr(data-binary); opacity: 0.15; line-height: 2em; letter-spacing: 2px; color: #369; font-size: 10px; pointer-events: none; } </style> <meta http-equiv="refresh"> </head> <body><div class="main"><div class="text"><div class="binary" data-binary="` + displayTeamID + `"><p align=center style="width:100%;text-align:center"><img align=middle style="width:180px; float:middle" src="./img/logo.png"></p>`
+	footer := `</p> <br> <p align=center style="text-align:center"> Hawai&#699;i Baptist Academy CyberEagles practice image, powered by the free and open source Aeacus project. This image is in no way endorsed by or affiliated with the Air Force Association, CyberPatriot, or the University of Texas at San Antonio. </p> </div> </div> </div> </body> </html>`
 
 	genTime := time.Now()
 
@@ -48,11 +48,11 @@ func genReport(img *imageData) {
 		htmlFile.WriteString(`<p><h3>Connection Status: <span class="` + conn.OverallColor + `">` + conn.OverallStatus + `<span></h3>`)
 
 		htmlFile.WriteString(`Internet Connectivity Check: <span class="` + conn.NetColor + `">` + conn.NetStatus + `</span><br>`)
-		htmlFile.WriteString(`Aeacus Server Connection Status: <span class="` + conn.ServerColor + `">` + conn.ServerStatus + `</span></p>`)
+		htmlFile.WriteString(`Scoring Server Connection Status: <span class="` + conn.ServerColor + `">` + conn.ServerStatus + `</span></p>`)
 	} else {
 		htmlFile.WriteString(`<p><h3>Connection Status: <span class="` + conn.OverallColor + `">` + conn.OverallStatus + `<span></h3>`)
 		htmlFile.WriteString(`Internet Connectivity Check: <span class="gray">N/A</span><br>`)
-		htmlFile.WriteString(`Aeacus Server Connection Status: <span class="gray">N/A</span><br>`)
+		htmlFile.WriteString(`Scoring Server Connection Status: <span class="gray">N/A</span><br>`)
 	}
 
 	htmlFile.WriteString(fmt.Sprintf(`<h3> %d penalties assessed, for a loss of %.0f points: </h3> <p> <span class="red">`, len(img.Penalties), math.Abs(float64(img.Detracts))))
@@ -107,7 +107,7 @@ func genReadMe() {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Aeacus README</title>
+	<title>HBA CyberEagles README</title>
 	<style>
 		body {
 			background-image: url("./img/background.png");
@@ -181,8 +181,9 @@ func genReadMe() {
 	If this happens, the safest way to stop scoring is to suspend the virtual machine.
 	You should <b>NOT</b> power on the VM again before deleting.</li></ul>
 	<p align="center" style="text-align:center">
-	The Aeacus Project is in no way affiliated or endorsed by the Air Force Association or the University of Texas at
-	San Antonio.
+	Hawai&#699;i Baptist Academy CyberEagles practice image, powered by the open source Aeacus Project.
+	This image is in no way affiliated with or endorsed by the Air Force Association, CyberPatriot, or the
+	University of Texas at San Antonio.
 	</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
 	<div class="footer"><div class="footer-copyright-wrap"><div class="container"><div class="footer-copyright-content">
 	<ul><li>Copyright Never &copy;</li><li>No rights reserved</li></ul></div></div></div></div></body></html>`

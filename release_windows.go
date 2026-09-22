@@ -112,14 +112,14 @@ func installService() {
 	cmdString := `sc.exe create CSSClient binPath= "C:\aeacus\phocus.exe" start= "auto" DisplayName= "CSSClient"`
 	shellCommand(cmdString)
 	info("Setting service description...")
-	cmdString = `sc.exe description CSSClient "This is Aeacus's Competition Scoring System client. Don't stop or mess with this unless you want to not get points, and maybe have your registry deleted."`
+	cmdString = `sc.exe description CSSClient "HBA CyberEagles Competition Scoring System client. Do not stop or modify this service, or your image will stop being scored."`
 	shellCommand(cmdString)
 	info("Setting up TeamID scheduled task...")
 	idTaskCreate := `
 	$action = New-ScheduledTaskAction -Execute "C:\aeacus\phocus.exe" -Argument "-i yes"
 	$trigger = New-ScheduledTaskTrigger -AtLogon
 	$principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Administrators" -RunLevel Highest
-	Register-ScheduledTask -TaskName "TeamID" -Description "Scheduled Task to ensure Aeacus TeamID prompt is displayed when needed" -Action $action -Trigger $trigger -Principal $principal
+	Register-ScheduledTask -TaskName "TeamID" -Description "Scheduled Task to ensure the TeamID prompt is displayed when needed" -Action $action -Trigger $trigger -Principal $principal
 	`
 	serviceTaskCreate := `
 	$action = New-ScheduledTaskAction -Execute "net.exe" -Argument "start CSSClient"
