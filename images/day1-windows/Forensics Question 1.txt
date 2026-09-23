@@ -1,0 +1,4 @@
+A backdoor listener was installed on this machine. What TCP port
+does it listen on?
+
+ANSWER:
