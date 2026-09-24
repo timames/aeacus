@@ -74,42 +74,46 @@ try {
     Write-Warning "Could not set password-never-expires via ADSI. Set it manually in lusrmgr.msc."
 }
 
+Write-Host "[6/15] Creating authorized user 'bkahale' with weak password 'password'..." -ForegroundColor Cyan
+net user bkahale "password" /add 2>$null
+if ($LASTEXITCODE -ne 0) { Write-Warning "bkahale may already exist" }
+
 # -------------------------------------------------------
 # SYSTEM HARDENING - RDP
 # -------------------------------------------------------
-Write-Host "[6/14] Enabling Remote Desktop..." -ForegroundColor Cyan
+Write-Host "[7/15] Enabling Remote Desktop..." -ForegroundColor Cyan
 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0 -Type DWord
 
 # -------------------------------------------------------
 # SYSTEM HARDENING - Remote Registry
 # -------------------------------------------------------
-Write-Host "[7/14] Setting Remote Registry to Automatic and starting it..." -ForegroundColor Cyan
+Write-Host "[8/15] Setting Remote Registry to Automatic and starting it..." -ForegroundColor Cyan
 Set-Service -Name RemoteRegistry -StartupType Automatic
 Start-Service -Name RemoteRegistry -ErrorAction SilentlyContinue
 
 # -------------------------------------------------------
 # SYSTEM HARDENING - UAC
 # -------------------------------------------------------
-Write-Host "[8/14] Disabling UAC..." -ForegroundColor Cyan
+Write-Host "[9/15] Disabling UAC..." -ForegroundColor Cyan
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0 -Type DWord
 
 # -------------------------------------------------------
 # SYSTEM HARDENING - IIS (Forensics Q1 evidence)
 # -------------------------------------------------------
-Write-Host "[9/14] Installing IIS Web Server (this is the Forensics Q1 evidence)..." -ForegroundColor Cyan
+Write-Host "[10/15] Installing IIS Web Server (this is the Forensics Q1 evidence)..." -ForegroundColor Cyan
 Install-WindowsFeature Web-Server -IncludeManagementTools -ErrorAction SilentlyContinue | Out-Null
 Write-Host "  IIS installed. Default site listening on port 80." -ForegroundColor DarkGray
 
 # -------------------------------------------------------
 # SYSTEM HARDENING - SMBv1
 # -------------------------------------------------------
-Write-Host "[10/14] Enabling SMBv1..." -ForegroundColor Cyan
+Write-Host "[11/15] Enabling SMBv1..." -ForegroundColor Cyan
 Install-WindowsFeature FS-SMB1 -ErrorAction SilentlyContinue | Out-Null
 
 # -------------------------------------------------------
 # SYSTEM HARDENING - Unauthorized share
 # -------------------------------------------------------
-Write-Host "[11/14] Creating unauthorized share 'Secrets'..." -ForegroundColor Cyan
+Write-Host "[12/15] Creating unauthorized share 'Secrets'..." -ForegroundColor Cyan
 New-Item -ItemType Directory -Path "C:\Secrets" -Force | Out-Null
 "This is a secret file." | Set-Content "C:\Secrets\secret.txt"
 net share Secrets="C:\Secrets" /grant:everyone,FULL 2>$null
@@ -117,13 +121,13 @@ net share Secrets="C:\Secrets" /grant:everyone,FULL 2>$null
 # -------------------------------------------------------
 # SYSTEM HARDENING - Firewall
 # -------------------------------------------------------
-Write-Host "[12/14] Disabling Windows Firewall on all profiles..." -ForegroundColor Cyan
+Write-Host "[13/15] Disabling Windows Firewall on all profiles..." -ForegroundColor Cyan
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 # -------------------------------------------------------
 # PROHIBITED FILES - Media file
 # -------------------------------------------------------
-Write-Host "[13/14] Planting media file..." -ForegroundColor Cyan
+Write-Host "[14/15] Planting media file..." -ForegroundColor Cyan
 $musicDir = "C:\Users\Administrator\Music"
 New-Item -ItemType Directory -Path $musicDir -Force | Out-Null
 [byte[]]$fakemp3 = 0xFF, 0xFB, 0x90, 0x00
@@ -132,7 +136,7 @@ New-Item -ItemType Directory -Path $musicDir -Force | Out-Null
 # -------------------------------------------------------
 # AEACUS SETUP
 # -------------------------------------------------------
-Write-Host "[14/14] Creating C:\aeacus directory structure..." -ForegroundColor Cyan
+Write-Host "[15/15] Creating C:\aeacus directory structure..." -ForegroundColor Cyan
 New-Item -ItemType Directory -Path "C:\aeacus" -Force | Out-Null
 New-Item -ItemType Directory -Path "C:\aeacus\assets" -Force | Out-Null
 New-Item -ItemType Directory -Path "C:\aeacus\assets\img" -Force | Out-Null
@@ -166,7 +170,9 @@ Write-Host "  5. Copy HintLadder.ps1 -> C:\aeacus\HintLadder.ps1" -ForegroundCol
 Write-Host "  6. Copy ReadMe.conf -> C:\aeacus\ReadMe.conf (edit template first!)" -ForegroundColor White
 Write-Host "  7. Copy logo.png + logo.ico -> C:\aeacus\assets\img\" -ForegroundColor White
 Write-Host "  8. Run:  C:\aeacus\aeacus.exe --verbose check" -ForegroundColor White
-Write-Host "  9. Verify scoring report shows 0/100, then:" -ForegroundColor White
+Write-Host "  9. Run:  (Get-LocalUser bkahale).PasswordLastSet" -ForegroundColor White
+Write-Host "     Paste that value into scoring.conf (the 'after' field for bkahale)" -ForegroundColor DarkGray
+Write-Host " 10. Verify scoring report shows 0/100, then:" -ForegroundColor White
 Write-Host "     Run:  C:\aeacus\aeacus.exe --verbose release" -ForegroundColor White
 Write-Host ""
 Write-Host "NOTE: The 'Rename Administrator' check expects the account renamed to 'CyberAdmin'" -ForegroundColor Yellow
